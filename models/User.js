@@ -12,6 +12,10 @@ const UserSchema = mongoose.Schema({
     password: {
         type: String,
         required: true,
+    },
+    imgOwner: {
+        type: String,
+        required: true,
     }
 },{
     timestamps: true
