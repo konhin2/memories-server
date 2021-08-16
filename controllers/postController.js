@@ -34,11 +34,10 @@ exports.createPost = async (req, res) => {
 }
 
 exports.updatePost = async (req, res) => {
-
     const { postId, title, content, imageURL, username, imgOwner } = req.body
 
     try {
-        const response = await Proyecto.findByIdAndUpdate(postId, {
+        const response = await Post.findByIdAndUpdate(postId, {
             title,
             content,
             imageURL,
@@ -58,7 +57,6 @@ exports.deletePost = async (req, res) => {
     const { postId } = req.body
     try{
         const response = await Post.findOneAndRemove({_id:postId})
-        console.log(response)
         res.json(response)
     }
     catch(error){
