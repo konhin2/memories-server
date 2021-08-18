@@ -23,6 +23,7 @@ app.use("/api/auth", require('./routes/auth'))
 
 app.use("/api/posts", require('./routes/posts'))
 app.use("/api/comments", require('./routes/comments'))
+app.use("/api/likes", require('./routes/likes'))
 
 app.get("/", (req, res) => {
     res.send("Hello World!")

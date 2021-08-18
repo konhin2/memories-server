@@ -6,13 +6,13 @@ const commentController = require('./../controllers/commentController')
 
 // 2. RUTEO
 
-// OBTENCIÓN DE TODOS LOS PROYECTOS
+// OBTENCIÓN DE TODOS LOS COMENTARIOS
 router.get('/', commentController.getComments)
 
-// CREAR UN PROYECTO NUEVO
+// CREAR UN COMENTARIOS NUEVO
 router.post('/create', commentController.createComments)
 
-// EDITAR UN PROYECTO
+// EDITAR UN COMENTARIO
 router.post('/update', commentController.updateComments)
 
 router.post('/delete', commentController.deleteComments)
