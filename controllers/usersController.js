@@ -1,4 +1,6 @@
 const User = require('../models/User')
+const Post = require('../models/Post')
+const Comment = require('../models/Comment')
 const bcryptjs = require('bcryptjs')
 const { validationResult } = require('express-validator')
 const jwt = require('jsonwebtoken')
@@ -62,4 +64,55 @@ exports.createUser = async (req, res) => {
             msg:err
         })
     }
+}
+
+exports.updateUser = async (req, res) => {
+    const { username, imgOwner } = req.body
+    const foundUser = await User.findOne({username})
+    try{
+        const response = await User.findByIdAndUpdate(foundUser._id, {
+            username: username,
+            email: foundUser.email,
+            password: foundUser.password,
+            imgOwner: imgOwner,
+        }, {new: true})
+        const findPosts = await Post.find({username: foundUser.username})
+        for (const post of findPosts) {
+            await Post.findByIdAndUpdate(post._id, {
+                title: post.title,
+                content: post.content,
+                imageURL: post.imageURL,
+                username: username,
+                imgOwner: imgOwner,
+            }, {new: true})
+        }
+        const findComments = await Comment.find({username: foundUser.username})
+        for (const comment of findComments) {
+            await Comment.findByIdAndUpdate(comment._id, {
+                comment: comment.comment,
+                username: username,
+                img: imgOwner,
+            }, {new: true})
+        }
+        // CREAR UN JWT
+        const payload = {
+            user: {
+                id: response._id,
+            }
+        }
+        // FIRMAR EL JWT
+        jwt.sign(
+            payload, // LOS DATOS QUE SE ENVIAN AL FRONEND CLIENTE
+            process.env.SECRET, // ESTA ES LA LLAVE PARA DESCIFRAR LA FIRMA ELECTRONICA
+            {
+                expiresIn: 360000
+            },
+            (err, token) => {
+                if (err) throw err
+                res.json({
+                    token,
+                })
+            }
+        )
+    }catch (e) {}
 }

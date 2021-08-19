@@ -19,6 +19,10 @@ router.post(
         check('email', "Agrega un email válido").isEmail(),
         check('password', 'El password debe tener un mínimo de 6 caracteres').isLength({min: 6})
     ],
-    userController.createUser)
+    userController.createUser
+)
+
+router.post('/update', userController.updateUser)
+
 
 module.exports = router
